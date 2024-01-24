@@ -1,0 +1,12 @@
+---
+title: "Homework_02"
+author: "Shelby N. Scarfo"
+date: "2024-01-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This link is blank but satisfies the purpose for homework #2.
