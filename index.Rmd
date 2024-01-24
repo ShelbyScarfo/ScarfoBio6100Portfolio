@@ -17,4 +17,4 @@ The purpose of this site it to house the portfolio of all Computational Biology 
 
 #### Homework #2
 
-This is the homework link to homework #2: [Link](Homework_02.Rmd)
+This is the homework link to homework #2: [Link](Homework_02.html)
