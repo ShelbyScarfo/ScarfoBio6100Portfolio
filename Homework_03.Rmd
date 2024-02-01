@@ -1,0 +1,56 @@
+---
+title: "Homework_03"
+author: "Shelby N. Scarfo"
+date: "2024-01-31"
+output: 
+  html_document: 
+    theme: cerulean
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Question 1:  
+  Find: ``` {2, }``` (This includes a space before the curly brackets)  
+  Replace with: ```,```  
+  Explanation: I wanted to find where there was one or more spaces in between the columns. I used the curly brackets to represent two or more. We were asked to replaces the spaces with a common which is what I included in the replace field.
+  
+  
+
+### Question 2:  
+  Find: ```(\w+), (\w+), (.*)```  
+  Replace with: ```\2 \1 \(\3\)```  
+  Explanation: I wanted to the first name, last name, and the institution. To do this I used the parentheses to keep the three sections to call on later. For the first two parentheses, I included ```\w+``` followed by a comma and a space so that I found a one or more characters followed by a comma and a space. I did not include the comma and space in the parentheses because I did not want to "keep" these. In the final set of parentheses I included ```.*``` because I wanted to grab zero or more consecutive characters, essentially the rest of the characters. In find, I ordered by saved parts in 2 (first name), 1 (last name), followed by a backslash open parenthesis, part 3, followed by a final backslash close parenthesis in order to add parentheses around the institution name.
+
+
+### Question 3:  
+  Find: ```\.mp3 ```  
+  Replace with: ```\.mp3 \n```  
+  Explanation: I wanted to search for the character string ".mp3 " (with a space after it) and then add a single line break after those character strings. To do this, in the "replace with" field I put ```\.mp3 ``` followed by ```\n``` to include the line break.
+
+
+### Question 4:  
+  Find: ```(\d{4}) (\w.*)(.mp3$)```  
+  Replace with: ```\2\_\1\3```  
+  Explanation: In find, I wanted to save three different portions, the digits, the title, and the file type.To separate the digits I used ```(\d{4})``` to signify I wanted a digit string that was 4 digits long without the space saved. Next, I wanted the rest of the text but a boundary with the ```.mp3``` portion being at the end. I did this by saving the rest of the characters but then creating the .mp3 boundary at the end using the $ symbol. In the replace field I simply ordered my saved portions and included the underscore after the title portion.
+
+
+### Question 5:  
+  Find: ```(\w)\w+,(\w+),.*(,.*)```  
+  Replace with: ```\1\_\2\3```  
+  Explanation: I wanted to save three portions, the first letter of the genus, the species name, and the final numerical variables. I separated out the first letter with ```(\w)```, then essentially ignored the rest of the word and comma using ```\w+,```. The species was saved using ```(\w+)```. The comma and the first numerical variables were found by using ```,.*```, however the last numerical variables were saved using ```(,.*)```, using the comma to identify the beginning of the variables I wanted to keep. I then parsed together the three saved bits in the replace with field, being sure to add an underscore after the first letter of the genus.
+
+
+### Question 6:  
+  Find: ```(/w)\w+,(\w{4})\w+,.*(,.*)```  
+  Replace with:```\1\_\2\3```  
+  Explanation: The find field stayed mostly the same as in question 5. However, instead of keeping the entire species name, I only selected the first 4 characters and did not save the rest. The replace with field stayed the same as question 5.
+
+
+### Question 7:  
+  Find:```(\w{3})\w+,(\w{3})\w+(,.*)(,.*)```  
+  Replace with: ```\1\2\4\3```  
+  Explanation: The first three characters of the genus and species were saved along with the two numerical variables. Everything else was identified but not saved. In the replace with field, the four saved sections were arranged in the order 1, 2, 4, 3.

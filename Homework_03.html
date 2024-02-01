@@ -11,9 +11,9 @@
 
 <meta name="author" content="Shelby N. Scarfo" />
 
-<meta name="date" content="2024-01-24" />
+<meta name="date" content="2024-01-31" />
 
-<title>Index</title>
+<title>Homework_03</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -321,29 +321,96 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Index</h1>
+<h1 class="title toc-ignore">Homework_03</h1>
 <h4 class="author">Shelby N. Scarfo</h4>
-<h4 class="date">2024-01-24</h4>
+<h4 class="date">2024-01-31</h4>
 
 </div>
 
 
-<div id="purpose" class="section level3">
-<h3>Purpose:</h3>
-<p>The purpose of this site it to house the portfolio of all
-Computational Biology (Bio6100) homework assignments.</p>
+<div id="question-1" class="section level3">
+<h3>Question 1:</h3>
+<p>Find: <code>{2, }</code> (This includes a space before the curly
+brackets)<br />
+Replace with: <code>,</code><br />
+Explanation: I wanted to find where there was one or more spaces in
+between the columns. I used the curly brackets to represent two or more.
+We were asked to replaces the spaces with a common which is what I
+included in the replace field.</p>
 </div>
-<div id="homework-links" class="section level3">
-<h3>Homework links</h3>
-<div id="homework-2" class="section level4">
-<h4>Homework #2</h4>
-<p>This is the <a href="Homework_02.html">link</a> to homework #2.</p>
+<div id="question-2" class="section level3">
+<h3>Question 2:</h3>
+<p>Find: <code>(\w+), (\w+), (.*)</code><br />
+Replace with: <code>\2 \1 \(\3\)</code><br />
+Explanation: I wanted to the first name, last name, and the institution.
+To do this I used the parentheses to keep the three sections to call on
+later. For the first two parentheses, I included <code>\w+</code>
+followed by a comma and a space so that I found a one or more characters
+followed by a comma and a space. I did not include the comma and space
+in the parentheses because I did not want to “keep” these. In the final
+set of parentheses I included <code>.*</code> because I wanted to grab
+zero or more consecutive characters, essentially the rest of the
+characters. In find, I ordered by saved parts in 2 (first name), 1 (last
+name), followed by a backslash open parenthesis, part 3, followed by a
+final backslash close parenthesis in order to add parentheses around the
+institution name.</p>
 </div>
-<div id="homework-3" class="section level4">
-<h4>Homework #3</h4>
-<p>This is the <a href="Homework_03.html">link</a> to the homework #3
-assignment on regular expressions.</p>
+<div id="question-3" class="section level3">
+<h3>Question 3:</h3>
+<p>Find: <code>\.mp3</code><br />
+Replace with: <code>\.mp3 \n</code><br />
+Explanation: I wanted to search for the character string “.mp3” (with a
+space after it) and then add a single line break after those character
+strings. To do this, in the “replace with” field I put
+<code>\.mp3</code> followed by <code>\n</code> to include the line
+break.</p>
 </div>
+<div id="question-4" class="section level3">
+<h3>Question 4:</h3>
+<p>Find: <code>(\d{4}) (\w.*)(.mp3$)</code><br />
+Replace with: <code>\2\_\1\3</code><br />
+Explanation: In find, I wanted to save three different portions, the
+digits, the title, and the file type.To separate the digits I used
+<code>(\d{4})</code> to signify I wanted a digit string that was 4
+digits long without the space saved. Next, I wanted the rest of the text
+but a boundary with the <code>.mp3</code> portion being at the end. I
+did this by saving the rest of the characters but then creating the .mp3
+boundary at the end using the $ symbol. In the replace field I simply
+ordered my saved portions and included the underscore after the title
+portion.</p>
+</div>
+<div id="question-5" class="section level3">
+<h3>Question 5:</h3>
+<p>Find: <code>(\w)\w+,(\w+),.*(,.*)</code><br />
+Replace with: <code>\1\_\2\3</code><br />
+Explanation: I wanted to save three portions, the first letter of the
+genus, the species name, and the final numerical variables. I separated
+out the first letter with <code>(\w)</code>, then essentially ignored
+the rest of the word and comma using <code>\w+,</code>. The species was
+saved using <code>(\w+)</code>. The comma and the first numerical
+variables were found by using <code>,.*</code>, however the last
+numerical variables were saved using <code>(,.*)</code>, using the comma
+to identify the beginning of the variables I wanted to keep. I then
+parsed together the three saved bits in the replace with field, being
+sure to add an underscore after the first letter of the genus.</p>
+</div>
+<div id="question-6" class="section level3">
+<h3>Question 6:</h3>
+<p>Find: <code>(/w)\w+,(\w{4})\w+,.*(,.*)</code><br />
+Replace with:<code>\1\_\2\3</code><br />
+Explanation: The find field stayed mostly the same as in question 5.
+However, instead of keeping the entire species name, I only selected the
+first 4 characters and did not save the rest. The replace with field
+stayed the same as question 5.</p>
+</div>
+<div id="question-7" class="section level3">
+<h3>Question 7:</h3>
+<p>Find:<code>(\w{3})\w+,(\w{3})\w+(,.*)(,.*)</code><br />
+Replace with: <code>\1\2\4\3</code><br />
+Explanation: The first three characters of the genus and species were
+saved along with the two numerical variables. Everything else was
+identified but not saved. In the replace with field, the four saved
+sections were arranged in the order 1, 2, 4, 3.</p>
 </div>
 
 

@@ -1,8 +1,11 @@
 ---
-title: "index"
+title: "Index"
 author: "Shelby N. Scarfo"
 date: "2024-01-24"
-output: html_document
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
 ---
 
 ```{r setup, include=FALSE}
@@ -17,4 +20,9 @@ The purpose of this site it to house the portfolio of all Computational Biology 
 
 #### Homework #2
 
-This is the homework link to homework #2: [Link](Homework_02.html)
+This is the [link](Homework_02.html) to homework #2.
+
+
+#### Homework #3
+
+This is the [link](Homework_03.html) to the homework #3 assignment on regular expressions.
