@@ -1,0 +1,103 @@
+---
+title: "Homework_04"
+author: "Shelby N. Scarfo"
+date: "2024-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 1:  
+```{r}
+x <- 1.1
+a <- 2.2
+b <- 3.3
+
+z <- x^a^b
+print(z)
+```
+b.
+```{r}
+z <- (x^a)^b
+print(z)
+```
+c.
+```{r}
+z <- 3*x^3 + 2*x^2 + 1
+print(z)
+```
+
+### Question 2:  
+a.
+``` {r}
+vec_1 <- c(seq(c(1:8)),7:1)
+print(vec_1)
+```
+b.
+``` {r}
+vec_2 <- 1:5
+rep(x = vec_2, times = vec_2)
+```
+c.
+```{r}
+vec_3 <- 5:1
+rep(x = vec_3, times = rev(vec_3))
+```
+
+### Question 3:  
+```{r}
+set.seed(30)
+c <- runif(2)
+print(c)
+
+```
+### Question 4:  
+a. 
+```{r}
+queue <- c("sheep", "fox", "owl", "ant")
+
+queue[5] <- "serpent"
+
+print(queue)
+```
+b. 
+```{r}
+queue <- queue[-1]
+print(queue)
+```
+c.
+```{r}
+queue <- c("donkey", queue)
+print(queue)
+```
+d.
+```{r}
+queue <- queue[-5]
+print(queue)
+```
+e.
+```{r}
+queue <- queue[-3]
+print(queue)
+```
+f.
+```{r}
+queue <- c(queue[1:2], "aphid", queue[3])
+print(queue)
+```
+e.
+```{r}
+which(queue == "aphid")
+```
+### Question 5:
+```{r}
+v <- seq(1:100)
+v <- v[v %% 2 != 0 & v %% 3 !=0 & v %% 7 != 0]
+print(v)
+```
+
+  a. $${{1.1^{2.2}}^{3.3}}$$ 
+  b. $${(1.1^{2.2})^{3.3}}$$  
+  c. $$3
