@@ -1,0 +1,95 @@
+---
+title: "Homework_05"
+author: "Shelby N. Scarfo"
+date: "2024-02-14"
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#### Library
+```{r, include=FALSE}
+library(dplyr)
+```
+
+
+### Question 1:
+
+```{r}
+n_dims<- sample(3:10, 1)
+n_dims
+v1 <- 1:(n_dims)^2  
+
+v2 <- sample(v1)  
+
+m <- matrix(data = v2, nrow = n_dims)  
+
+print(m)  
+
+m_transpose <- t(m)  
+# The values in the rows and columns have flipped. Everything that was in previously in [,1] is now in [1,] and vice versa for all other columns and rows.  
+
+sum_first_row <- sum(m_transpose[1,])
+print(sum_first_row)
+mean_first_row <- mean(m_transpose[1,])
+print(mean_first_row)
+
+sum_last_row <- sum(m_transpose[nrow(m_transpose),])
+print(sum_last_row)
+mean_last_row <- mean(m_transpose[nrow(m_transpose),])
+print(mean_last_row)  
+
+em <- eigen(m_transpose) 
+# This returns a list of values and vectors. Eigenvalues informs us about the variation along the axis, the larger the eigenvalue the more variance. Eigenvectors are vectors associated with linear equations.  
+
+emval <- em$values
+emvec <- em$vectors
+typeof(emval)
+typeof(emvec)
+#These are both complex numbers.
+```
+
+### Question 2:
+
+```{r}
+my_matrix <- matrix(runif(16), nrow = 4)
+
+T_F <- runif(100)
+my_logical <- T_F > 0.5
+
+my_letters <- sample(letters)
+
+my_list <- list(my_matrix, my_logical,my_letters)
+
+new_list <- list(my_matrix[2,2], my_logical[2], my_letters[2])
+
+print(new_list)
+
+typeof(new_list[[1]])
+typeof(new_list[[2]])
+typeof(new_list[[3]])
+
+
+comb_my_list <- c(new_list[[1]], new_list[[2]], new_list[[3]])
+
+typeof(comb_my_list)
+```
+
+### Question 3:
+```{r}
+my_unis <- runif(26, min = 0, max = 10)
+my_letters <- sample(LETTERS)
+df <- data.frame(my_unis,my_letters)
+df$my_unis[sample(nrow(df), 4)] <- NA
+df
+which(is.na(df$my_unis))
+df1 <- arrange(df, my_letters)
+df1
+
+mean(df1$my_unis, na.rm = TRUE)
+```
+
