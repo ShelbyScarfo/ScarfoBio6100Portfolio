@@ -26,3 +26,7 @@ This is the [link](Homework_02.html) to homework #2.
 #### Homework #3
 
 This is the [link](Homework_03.html) to the homework #3 assignment on regular expressions.
+
+#### Homework #4
+
+This is the [link](Homework_04.html) to the homework #4 assignment on atomic vectors.
