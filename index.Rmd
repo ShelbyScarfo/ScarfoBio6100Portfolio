@@ -34,3 +34,7 @@ This is the [link](Homework_04.html) to the homework #4 assignment on atomic vec
 #### Homework #5
 
 This is the [link](Homework_05.html) to the homework #5 assignment on matrices, lists, and data frames.
+
+#### Homework #6
+
+This is the [link](Homework_06.html) to the homework #6 assignment on simulating and fitting data distributions.
