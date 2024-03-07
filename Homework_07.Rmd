@@ -1,0 +1,165 @@
+---
+title: "Homework_07"
+author: "Shelby N. Scarfo"
+date: "2024-02-28"
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I am using a bottom trawling dataset that looks at the catch per unit effort (CPUE) of alewife throughout the three different portions (north, central, south) of the main lake in Lake Champlain. I am not expecting to see any significant differences in CPUE between these regions because they are all part of the main lake and are not geographically isolated from eachother.
+
+### Running ANOVA and Tukey tests on my own data
+```{r, message=FALSE, warning=FALSE}
+#Libraries
+library(ggplot2)
+library(MASS)
+library(dplyr)
+library(truncnorm)
+```
+
+```{r}
+#Loading in data and getting attributes
+
+ALW_CPUE_basin <- read.csv("ALW_CPUE_basin.csv")
+
+ALW_CPUE_basin$minor_basin <- factor(ALW_CPUE_basin$minor_basin, levels = c("North Main Lake", "Central Main Lake", "South Main Lake"))
+
+str(ALW_CPUE_basin)
+
+summary(ALW_CPUE_basin)
+
+ALW_CPUE <- group_by(ALW_CPUE_basin, minor_basin) %>%
+  summarise(
+    count = n(),
+    mean = mean(CPUE, na.rm = TRUE),
+    sd = sd(CPUE, na.rm = TRUE)
+  )
+print(ALW_CPUE) # This shows the sample sizes, means, and variances for each group
+
+```
+
+```{r}
+#Running ANOVA on data and creating figure
+
+res.aov <- aov(CPUE~minor_basin, data = ALW_CPUE_basin)
+summary(res.aov)
+
+TukeyHSD(res.aov)
+
+ANOplot <- ggplot(data = ALW_CPUE_basin)+
+  aes(x= minor_basin, y = CPUE, fill = minor_basin) +
+  geom_boxplot()
+ANOplot
+
+```
+
+The ANOVA and tukey tests shows that there is no statistical difference (p > 0.05) between CPUE in the three regions of the main lake.
+
+### Making fake dataset that has the same attributes as my real one
+
+```{r}
+# Giving this data the same parameters as my original data
+nGroup <- 3
+nName <- c("North Main Lake", "Central Main Lake", "South Main Lake")
+nSize <- c(72, 218, 55)
+nMean <- c(100.4, 90.1, 54.9)
+nSD <- c(199.7, 169.8, 119.2)
+ID <- 1:(sum(nSize))
+
+#Used rtruncnorm to set my bottom limit to 0 because I can't have a negative catch
+modelCPUE <- c(rtruncnorm(n=nSize[1], a = 0, b = Inf, mean=nMean[1],sd=nSD[1]),
+            rtruncnorm(n=nSize[2], a = 0, b = Inf, mean=nMean[2],sd=nSD[2]),
+            rtruncnorm(n=nSize[3], a = 0, b = Inf, mean=nMean[3],sd=nSD[3]))
+TGroup <- rep(nName,nSize)
+ANOdata <- data.frame(ID,TGroup,modelCPUE)
+
+ANOdata$TGroup <- factor(ANOdata$TGroup, levels = c("North Main Lake", "Central Main Lake", "South Main Lake"))
+
+str(ANOdata)
+```
+
+
+```{r}
+#ANOVA and plot of fake data
+
+ANOmodel <- aov(modelCPUE~TGroup,data=ANOdata)
+summary(ANOmodel)
+
+TestANOPlot <- ggplot(data=ANOdata,aes(x=TGroup,y=modelCPUE,fill=TGroup)) +
+  geom_boxplot()
+print(TestANOPlot)
+
+TukeyHSD(ANOmodel) #This shows that there is no statistic difference between Central Main Lake CPUE and North Main Lake CPUE but there is a statistical difference between the South Main Lake CPUE and the other two regions.
+```
+
+### Altering the metrics of the fake data to see how the parameters affect statistical significance 
+
+```{r}
+#Double the mean of the South Main Lake fake data
+set.seed(100)
+nGroup <- 3
+nName <- c("North Main Lake", "Central Main Lake", "South Main Lake")
+nSize <- c(72, 218, 55)
+nMean2 <- c(100.4, 90.1, 109.8)
+nSD <- c(199.7, 169.8, 119.2)
+ID <- 1:(sum(nSize))
+
+meanDubCPUE <- c(rtruncnorm(n=nSize[1], a = 0, b = Inf, mean=nMean2[1],sd=nSD[1]),
+            rtruncnorm(n=nSize[2], a = 0, b = Inf, mean=nMean2[2],sd=nSD[2]),
+            rtruncnorm(n=nSize[3], a = 0, b = Inf, mean=nMean2[3],sd=nSD[3]))
+TGroup <- rep(nName,nSize)
+ANOMeanDubdata <- data.frame(ID,TGroup,meanDubCPUE)
+
+ANOMeanDubdata$TGroup <- factor(ANOMeanDubdata$TGroup, levels = c("North Main Lake", "Central Main Lake", "South Main Lake"))
+
+#Run ANOVA and Tukey on doubled South Main Lake mean data
+
+ANOMeanDubmodel <- aov(meanDubCPUE~TGroup,data=ANOMeanDubdata)
+summary(ANOMeanDubmodel)
+
+ANOMeanDubPlot <- ggplot(data=ANOMeanDubdata,aes(x=TGroup,y=meanDubCPUE,fill=TGroup)) +
+  geom_boxplot()
+print(ANOMeanDubPlot)
+
+TukeyHSD(ANOMeanDubmodel)
+
+
+```
+In order for there to be no statistical difference between the North Main Lake and the South Main Lake CPUEs I had to double the original mean of the South Main Lake.
+
+```{r}
+#Change the sample sizes
+set.seed(110)
+nGroup <- 3
+nName <- c("North Main Lake", "Central Main Lake", "South Main Lake")
+nSize2 <- c(72, 218, 15)
+nMean <- c(100.4, 90.1, 54.9)
+nSD <- c(199.7, 169.8, 119.2)
+ID <- 1:(sum(nSize2))
+
+sizeCPUE <- c(rtruncnorm(n=nSize2[1], a = 0, b = Inf, mean=nMean[1],sd=nSD[1]),
+            rtruncnorm(n=nSize2[2], a = 0, b = Inf, mean=nMean[2],sd=nSD[2]),
+            rtruncnorm(n=nSize2[3], a = 0, b = Inf, mean=nMean[3],sd=nSD[3]))
+TGroup <- rep(nName,nSize2)
+ANOSizedata <- data.frame(ID,TGroup,sizeCPUE)
+
+ANOSizedata$TGroup <- factor(ANOSizedata$TGroup, levels = c("North Main Lake", "Central Main Lake", "South Main Lake"))
+
+#Run ANOVA and Tukey on altered sample size data
+
+ANOSizemodel <- aov(sizeCPUE~TGroup,data=ANOSizedata)
+summary(ANOSizemodel)
+
+ANOSizePlot <- ggplot(data=ANOSizedata,aes(x=TGroup,y=sizeCPUE,fill=TGroup)) +
+  geom_boxplot()
+print(ANOSizePlot)
+
+TukeyHSD(ANOSizemodel)
+```
+In order for there to be no statistical difference between the Central Main Lake and the South Main Lake CPUEs (largest sample size difference) I had to reduce the South Main Lake sample size by 40 to 15.
