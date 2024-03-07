@@ -38,3 +38,7 @@ This is the [link](Homework_05.html) to the homework #5 assignment on matrices, 
 #### Homework #6
 
 This is the [link](Homework_06.html) to the homework #6 assignment on simulating and fitting data distributions.
+
+#### Homework #7
+
+This is the [link](Homework_07.html) to the homework #7 assignment on creating fake data sets to explore hypotheses. 
