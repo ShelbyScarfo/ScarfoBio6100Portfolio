@@ -1,0 +1,105 @@
+---
+title: "Homework_08"
+author: "Shelby N. Scarfo"
+date: "2024-03-20"
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, warning=FALSE}
+#Libraries and data
+library(dplyr)
+library(tidyverse)
+data("iris")
+```
+
+#### Question 1
+```{r}
+str(iris)
+```
+
+##### There are 150 observations and 5 variables
+
+#### Question 2
+```{r}
+iris1 <- iris %>%
+  filter(Species == "virginica"| Species == "versicolor") %>%
+  filter(Sepal.Length > 6 & Sepal.Width >2.5)
+str(iris1) 
+```
+##### There are 56 observations of 5 variables
+
+#### Question 3
+```{r}
+iris2 <- iris1 %>%
+  select(Species, Sepal.Length, Sepal.Width)
+str(iris2)
+```
+##### There are 56 observations of 3 variables
+
+#### Question 4
+```{r}
+iris3 <- iris2 %>%
+  arrange(desc(Sepal.Length))
+head(iris3)
+```
+
+#### Question 5
+```{r}
+iris4 <- iris3 %>%
+  mutate(Sepal.Area = Sepal.Length*Sepal.Width)
+str(iris4)
+```
+##### There are 56 observations of 4 variables
+
+#### Question 6
+```{r}
+iris5 <- iris4 %>%
+  summarise(
+    Avg.Sepal.Width = mean(Sepal.Width), 
+    Avg.Speal.Length = mean(Sepal.Length),
+    Sample.Size = n())
+```
+
+
+#### Question 7
+```{r}
+iris6 <- iris4 %>%
+  group_by(Species) %>%
+  summarise(
+    Avg.Sepal.Width = mean(Sepal.Width), 
+    Avg.Speal.Length = mean(Sepal.Length),
+    Sample.Size = n())
+print(iris6)
+```
+
+#### Question 8
+```{r}
+irisFinal <- iris %>%
+  filter(Species == "virginica"| Species == "versicolor") %>%
+  filter(Sepal.Length > 6 & Sepal.Width >2.5) %>%
+  select(Species, Sepal.Length, Sepal.Width) %>%
+  arrange(desc(Sepal.Length)) %>%
+  mutate(Sepal.Area = Sepal.Length*Sepal.Width) %>%
+  group_by(Species) %>%
+  summarise(
+    Avg.Sepal.Width = mean(Sepal.Width), 
+    Avg.Speal.Length = mean(Sepal.Length),
+    Sample.Size = n())
+```
+
+#### Question 9
+```{r}
+irisLonger <- iris %>%
+  pivot_longer(cols = c(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),
+               names_to = "Measure",
+               values_to = "Value")
+head(irisLonger)
+```
+
