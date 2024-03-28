@@ -42,3 +42,7 @@ This is the [link](Homework_06.html) to the homework #6 assignment on simulating
 #### Homework #7
 
 This is the [link](Homework_07.html) to the homework #7 assignment on creating fake data sets to explore hypotheses. 
+
+#### Homework #8
+
+This is the [link](Homework_08.html) to the homework #8 assignment on data manipulation using the dplyr package.
