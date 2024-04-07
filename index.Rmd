@@ -46,3 +46,7 @@ This is the [link](Homework_07.html) to the homework #7 assignment on creating f
 #### Homework #8
 
 This is the [link](Homework_08.html) to the homework #8 assignment on data manipulation using the dplyr package.
+
+#### Homework #9
+
+This is the [link](Homework_09.html) to the homework #9 assignment on organizing code with structured programming.
