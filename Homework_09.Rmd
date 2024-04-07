@@ -1,0 +1,41 @@
+---
+title: "Homework_09"
+author: "Shelby N. Scarfo"
+date: "2024-03-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+#Libraries and functions
+library(truncnorm)
+library(dplyr)
+library(ggplot2)
+source("Homework9.R")
+```
+
+#### Question #1
+```{r}
+#Collecting parameters
+f1 <- Data_Parameters(my_data =ALW_CPUE_basin)
+
+#Creating fake data using real parameters
+f2 <- Fake_Data(nMean = f1$mean, nSD = f1$sd, nSize = f1$count)
+
+#Running ANOVA and creaing box plot of fake data
+f3 <- ANO_model_figure(modelCPUE = f2$modelCPUE, ANOdata = f2, TGroup = f2$TGroup)
+```
+
+#### Question #2
+```{r}
+#Re-ordering North, Central, South Main Lake on boxplot
+f4 <- Fake_Data_ordered(nMean = f1$mean, nSD = f1$sd, nSize = f1$count)
+
+#Adding Tukey test to statistical analyses
+f5 <-ANO_model_figure_PlusTukey(modelCPUE = f4$modelCPUE, ANOdata = f4, TGroup = f4$TGroup)
+```
+
+
