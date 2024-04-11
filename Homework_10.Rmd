@@ -1,0 +1,95 @@
+---
+title: "Homework_10"
+author: "Shelby N. Scarfo"
+date: "2024-04-05"
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+```
+
+#### Question #1
+```{r}
+vector <- rbinom(n=20, size = 0:10, prob = 0.5)
+
+counter <- 0
+
+vec_zeros <- function(vector) {
+ for (i in seq_along(vector)) {
+   if (vector[i] == 0) {
+     counter <- counter + 1
+   }
+   return(counter)
+ }
+}
+
+```
+
+#### Question #2
+```{r}
+sub_zeros <- function(vector) {
+  return(sum(vector == 0))
+}
+```
+
+#### Question #3
+```{r}
+vec_matrix <- function(rows, columns) {
+  m <- matrix(NA, nrow = rows, ncol = columns)
+  for (i in 1:nrow(m)) {
+    for (j in 1:ncol(m)) {
+      m[i,j] <- i*j
+    }
+  }
+  return(m)
+}
+```
+
+#### Question #4
+```{r}
+#a 
+
+groups <- c("a", "b", "c")
+
+vars <- c(rnorm(n = 20, mean = 10),
+          rnorm(n = 20, mean = 20),
+          rnorm(n = 20, mean = 30))
+
+df <- data.frame(groups,vars)
+
+#b
+
+shuffle <- function(n = 10, means = c(10, 20, 30)) {
+  var1 <- rnorm(n = n, mean = means[1])
+  var2 <- rnorm(n = n, mean = means[2])
+  var3 <- rnorm(n = n, mean = means[3])
+  avgs <- c(mean(var1), mean(var2), mean(var3))
+  return(avgs)
+}
+
+#c
+
+df2 <- data.frame(rep = NA, a = NA, b = NA, c = NA)
+ for (i in 1:100) {
+   rep_data <- shuffle(df)
+   df2[i, 1:4] <- c(i, rep_data)
+ }
+head(df2)
+
+#d
+
+qplot(data = df2, x = a, geom = "histogram")
+qplot(data = df2, x = b, geom = "histogram")
+qplot(data = df2, x = c, geom = "histogram")
+
+#The reshuffled means are not always exactly the original specified mean. However, the reshuffled means very close to the original mean and are normally distributed. 
+```
+
