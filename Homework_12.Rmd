@@ -1,0 +1,230 @@
+---
+title: "Homework_12"
+author: "Shelby N. Scarfo"
+date: "2024-04-19"
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#### The purpose of these figures is to examine the length frequencies of smelt and alewife in main lake and by North, Central, and South Main Lake for lake trout diet data.
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+#Loading libraries
+library(readr)
+library(readxl)
+library(foreign)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(reshape2)
+library(ggplot2)
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(ggeasy)
+
+```
+
+```{r}
+#Import data
+
+#Setting working directory
+setwd("~/UVM/NonFF/MattLKTData")
+getwd()
+
+#Import individual fish csv
+Individual_fish <- read.csv("IndividualFish.csv")
+
+
+#Import sample csv
+Sample <- read.csv("Sample.csv")
+
+
+#Import site csv
+Site <- read.csv("Sites.csv")
+
+```
+
+```{r, warning=FALSE}
+#Mushing data into useable formats
+
+#Join sites and sample by site
+Sample.0 <- Sample %>%
+  left_join(., Site, by = "site")
+
+#Selecting relevant categories
+Sample.1 <- Sample.0 %>%
+  select(sampleID, gear, gear_spec, site, basin, minor_basin, goodsample, date_start,month, year, duration_min, depth_start_m, depth_end_m, depth_mean_m)
+
+#Merge sample.1 with Individual_fish
+Fish_sampled.0 <- Sample.1 %>%
+  left_join(., Individual_fish, by = "sampleID") %>%
+  select(sampleID, site, basin, minor_basin, gear, gear_spec, spec_code, tl_mm, wt_g, goodsample, year, month, date_start,duration_min, depth_start_m, depth_end_m, depth_mean_m)
+
+#Order basins
+Fish_sampled.0$minor_basin = factor(Fish_sampled.0$minor_basin, levels = c("North Main Lake", "Central Main Lake", "South Main Lake"), ordered = TRUE)
+
+#Filter by gear, basin, year, and species
+Fish_sampled.1 <- Fish_sampled.0 %>%
+  filter(gear == "BOT") %>%
+  #filter((year == "2019") | (year == "2020") | (year == "2021"))%>%
+  filter(gear_spec == "3 in 1") %>%
+  filter(!goodsample == "N" ) %>%
+  filter(!spec_code == "") %>%
+  filter(basin == "Main Lake") %>%
+  filter(!site == "Burlington Bay Cross-Contour") %>%
+  filter((spec_code == "ALW")|(spec_code == "RSM")) %>%
+  filter((depth_mean_m <= 60 ) | (depth_start_m <=60 & depth_end_m <=60))
+```
+
+```{r, warning=FALSE}
+#Figures
+
+#Length frequency for ALW and RSM for N,C,S main lake for all years
+LenFreqAllYr <- ggplot(data = Fish_sampled.1, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2016-2021")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreqAllYr
+LenFreqAllYr
+
+
+#Filter by gear, basin, 2016, and species
+Fish_sampled.2016 <- Fish_sampled.1 %>%
+  filter(year == "2016")
+  
+
+#Length frequency for ALW and RSM for N,C,S main lake for ONLY 2016
+LenFreq2016 <- ggplot(data = Fish_sampled.2016, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2016")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreq2016
+LenFreq2016
+
+
+#Filter by gear, basin, 2017, and species
+Fish_sampled.2017 <- Fish_sampled.1 %>%
+  filter(year == "2017")
+
+#Length frequency for ALW and RSM for N,C,S main lake for ONLY 2017
+LenFreq2017 <- ggplot(data = Fish_sampled.2017, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2017")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreq2017
+LenFreq2017
+
+
+#Filter by gear, basin, 2018, and species
+Fish_sampled.2018 <- Fish_sampled.1 %>%
+  filter(year == "2018")
+
+
+#Length frequency for ALW and RSM for N,C,S main lake for ONLY 2018
+LenFreq2018 <- ggplot(data = Fish_sampled.2018, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2018")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreq2018
+LenFreq2018
+
+
+#Filter by gear, basin, 2019, and species
+Fish_sampled.2019 <- Fish_sampled.1 %>%
+  filter(year == "2019")
+
+#Length frequency for ALW and RSM for N,C,S main lake for ONLY 2019
+LenFreq2019 <- ggplot(data = Fish_sampled.2019, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2019")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreq2019
+LenFreq2019
+
+
+#Filter by gear, basin, 2020, and species
+Fish_sampled.2020 <- Fish_sampled.1 %>%
+  filter(year == "2020")
+
+#Length frequency for ALW and RSM for N,C,S main lake for ONLY 2020
+LenFreq2020 <- ggplot(data = Fish_sampled.2020, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2020")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreq2020
+LenFreq2020
+
+
+#Filter by gear, basin, 2021, and species
+Fish_sampled.2021 <- Fish_sampled.1 %>%
+  filter(year == "2021")
+
+
+#Length frequency for ALW and RSM for N,C,S main lake for ONLY 2021
+LenFreq2021 <- ggplot(data = Fish_sampled.2021, aes(x= tl_mm))+
+  geom_histogram(binwidth = 5, boundary = 0, closed = "left", fill = "darkslategray3", color= "black")+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2021")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+
+#View LenFreq2021
+LenFreq2021
+
+
+# ALW and RSM Length Frequency 2019-2021 by N,C,S Main Lake
+Fish_sampled.2 <- Fish_sampled.1
+
+Fish_sampled.2$year = factor(Fish_sampled.2$year)
+
+AllTheThings <- ggplot(data = Fish_sampled.2, aes(x= tl_mm))+
+  geom_histogram(aes(fill = year),binwidth = 5, boundary = 0, closed = "left", color= "black", position = "stack")+
+  scale_fill_manual(values= c("darkorchid4", "mediumorchid", "orchid2", "darkblue", "mediumblue", "lightblue"))+
+  scale_y_continuous(name = "Number of Fish", expand = expansion(mult = c(0, 0.05)))+
+  scale_x_continuous(name = "Total Length (mm)") +
+  ggtitle("ALW and RSM Length Frequency 2016-2021")+
+  theme_bw() +
+  facet_grid(rows = vars(minor_basin),cols=vars(spec_code), scales = "free_y")+
+  easy_center_title()
+AllTheThings
+
+```
+
