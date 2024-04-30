@@ -54,3 +54,7 @@ This is the [link](Homework_09.html) to the homework #9 assignment on organizing
 #### Homework #10
 
 This is the [link](Homework_10.html) to the homework #10 assignment on for loops and randomization tests.
+
+#### Homework #11
+
+This is the [link](Homework_11.html) to the homework #11 assignment on batch processing.
