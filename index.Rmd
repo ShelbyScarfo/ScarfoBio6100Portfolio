@@ -58,3 +58,9 @@ This is the [link](Homework_10.html) to the homework #10 assignment on for loops
 #### Homework #11
 
 This is the [link](Homework_11.html) to the homework #11 assignment on batch processing.
+
+#### Homework #12
+
+This is the [link](Homework_12.html) to the homework #12 assignment on advanced ggplotting.
+
+##### Thank you for such a great class/lab experience. This course has been incredibly useful!
