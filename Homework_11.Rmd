@@ -1,0 +1,157 @@
+---
+title: "Homework_11"
+author: "Shelby N. Scarfo"
+date: "2024-04-12"
+output: 
+  html_document: 
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 1
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results="hide", fig.keep="none"}
+#Downloaded data and set up barracudar framework
+
+setwd("C:/Users/shelb/OneDrive/Documents/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11")
+
+# load packages ----
+library(log4r)
+library(TeachingDemos)
+library(tidyverse)
+library(pracma)
+library(ggmosaic)
+
+source("barracudar/DataTableTemplate.R")
+source("barracudar/AddFolder.R")
+source("barracudar/BuildFunction.R")
+source("barracudar/MetaDataTemplate.R")
+source("barracudar/CreatePaddedLabel.R")
+source("barracudar/InitiateSeed.R")
+source("barracudar/SetUpLog.R")
+source("barracudar/SourceBatch.R")
+
+source("barracudar/QBox.R")
+source("barracudar/QCon1.R")
+source("barracudar/QCon2.R")
+source("barracudar/QHist.R")
+source("barracudar/QLogis.R")
+source("barracudar/QScat.R")
+source("barracudar/QBub.R")
+source("barracudar/QContour.R")
+
+```
+
+### Question 2
+```{r}
+#Gathered the "countdata" folders
+setwd("~/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11/OriginalData")
+
+##Get a list of all the file names in original data folder
+filelist <- list.files("~/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11/OriginalData")
+filelist
+
+
+##For loop to pull out "countdata" files
+filenames <- c()
+for (i in 1:8) {
+  setwd(paste0("~/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11/OriginalData","/", filelist[i]))
+  filenames[i] <- list.files(pattern = "countdata")
+}
+
+filenames
+
+
+### Question 3
+
+## Pseudocode for major steps
+#   Cleaning data
+#   Extract years
+#   Calculate abundance 
+#   Calculate species richness
+
+##Functions for pseudocode
+
+# -----------------------------
+#FUNCTION clean_data
+#description: a function that cleans the data for any cases where the scientific name is missing.
+#inputs: filelist and filenames
+#outputs: cleaned data ready for use
+#####################################
+years <- c(2015,2016,2017,2018,2019,2020,2021,2022)
+clean_data <- function(filelist, filenames) { 
+  for (i in 1:8) {
+    setwd(paste0("/Users/shelb/OneDrive/Documents/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11/OriginalData/", filelist[i]))
+    RawData <- read.csv(filenames[i], na.strings = c("","NA"))
+    clean_data <- RawData[complete.cases(RawData["scientificName"]), ] 
+    setwd("C:/Users/shelb/OneDrive/Documents/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11/CleanedData")
+    write.csv(clean_data,paste0("CleanData_",years[i], ".csv"))
+  }
+}
+#-----------------------------------
+clean_data(filelist, filenames)
+
+cleanList <- list.files("~/UVM/Classes/BIOL6100/ScarfoBio6100Portfolio/Homework11/CleanedData")
+
+#-----------------------------------
+#FUNCTION extract_years
+#description: a function that extracts the names from the file name
+#inputs: cleanList (list of  clean file names)
+#outputs: years from file names
+#####################################
+extract_years <- function(cleanList){
+    years <- str_extract(cleanList, pattern = "\\d{4}")
+  return(years)
+}
+#-----------------------------------
+
+extract_years(cleanList)
+
+
+#-----------------------------------
+#FUNCTION calculate_abundance
+#description: a function that calculates the abundance for each year
+#inputs: cleanList (list of  clean file names)
+#outputs: abundance for each year
+#####################################
+calculate_abundance <- function(cleanList){
+  clean <- read.csv(cleanList)
+  abundance <- c()
+  abundance <- nrow(clean)
+  print(abundance)
+}
+#--------------------------------------
+
+#-----------------------------------
+#FUNCTION calculate_richness
+#description: a function that calculates the cpecies richness for each year
+#inputs: cleanList (list of  clean file names)
+#outputs: species richness for each year
+#####################################
+calculate_richness <- function(cleanList){
+  clean <- read.csv(cleanList)
+  richness <- c()
+  richness <- length(unique(clean$scientificName))
+  print(richness)
+}
+#-------------------------------------
+
+
+### Question 5
+
+#Run the functions using a for loop
+df <- data.frame(File = rep(NULL,8), Year = rep(NULL,8), Abundance = rep(NULL,8), Richness = rep(NULL,8))
+
+ for (i in 1:8){
+   df <- rbind(df, list(File= cleanList[i],
+                        Year= extract_years(cleanList[i]),
+                        Abundance = calculate_abundance(cleanList[i]),
+                        Richness= calculate_richness(cleanList[i])))
+ }
+
+df
+```
+
